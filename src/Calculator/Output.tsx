@@ -1,17 +1,11 @@
 import React from 'react';
-import { Operation } from './Input';
+import { Operation, operatorLookup } from './operators';
 
 type Props = {
   operations: Operation[];
 };
 
-const operatorLookup: any = {
-  add: '+',
-  multiply: '*',
-  subtract: '-',
-};
-
-const total = (operations: Operation[]) => {
+export const total = (operations: Operation[]) => {
   return operations.reduce((acc, operation) => {
     let number = parseFloat(operation.value);
 

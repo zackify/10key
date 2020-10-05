@@ -1,4 +1,5 @@
-import { Input, Operation } from 'Calculator/Input';
+import { Input } from 'Calculator/Input';
+import { Operation } from 'Calculator/operators';
 import { Output } from 'Calculator/Output';
 import React, { useState } from 'react';
 
@@ -18,20 +19,21 @@ function App() {
       <div>
         <Output operations={state.operations} />
         <Input
+          operations={state.operations}
           currentInput={state.currentInput}
           onInputChange={(currentInput) => setState({ ...state, currentInput })}
+          reset={() => setState(initialState)}
           addRow={(operator) =>
             setState({
               ...state,
               currentInput: '',
-              operations: [...state.operations, operator],
+              operations: [
+                ...state.operations,
+                { operator, value: state.currentInput },
+              ],
             })
           }
         />
-        <div style={{ display: 'flex' }}>
-          <div>Copy</div>
-          <div>Reset</div>
-        </div>
       </div>
     </div>
   );
