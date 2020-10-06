@@ -1,6 +1,6 @@
 import React, { CSSProperties, useRef } from 'react';
 import copy from 'copy-to-clipboard';
-import { total } from './Output';
+import { total } from './operators';
 import { Operation, operatorFromKey, operatorLookup } from './operators';
 
 type Props = {
@@ -49,23 +49,31 @@ export const Input = ({
                   : acc,
               0,
             );
-            console.log(longestStart);
             // this looks so messy but it works and i made it in 5 minutes lol
-            copy(`${operations
-              .map((operation) => {
-                let formattedValue = new Intl.NumberFormat().format(
-                  parseFloat(operation.value),
-                );
-                return `${formattedValue} ${new Array(
-                  longestStart - formattedValue.length + 10,
-                )
-                  .fill(0)
-                  .map((op) => '')
-                  .join(' ')} ${operatorLookup[operation.operator]}`;
-              })
-              .join('\n')}
+            copy(
+              `${operations
+                .map((operation) => {
+                  let formattedValue = new Intl.NumberFormat().format(
+                    parseFloat(operation.value),
+                  );
+                  let isSubtract = operation.operator === 'subtract';
+
+                  return `${formattedValue} ${new Array(
+                    longestStart - formattedValue.length + 20,
+                  )
+                    .fill(0)
+                    .map((op) => ' ')
+                    .join('&nbsp;')} ${
+                    isSubtract ? '<span style="color:red;">' : ''
+                  }${operatorLookup[operation.operator]}${
+                    isSubtract ? '</span>' : ''
+                  }`;
+                })
+                .join('<br />')}<br />
 ${total(operations)}
-            `);
+            `,
+              { format: 'text/html' },
+            );
             inputRef.current?.focus();
           }}
         >

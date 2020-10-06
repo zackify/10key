@@ -1,7 +1,8 @@
 import { Input } from 'Calculator/Input';
 import { Operation } from 'Calculator/operators';
 import { Output } from 'Calculator/Output';
-import React, { useState } from 'react';
+import React from 'react';
+import { useStorage } from 'useStorage';
 
 type State = {
   operations: Operation[];
@@ -13,7 +14,7 @@ const initialState = {
 };
 
 function App() {
-  let [state, setState] = useState<State>(initialState);
+  let [state, setState] = useStorage(initialState);
   return (
     <div className="wrapper">
       <div>
