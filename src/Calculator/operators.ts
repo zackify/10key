@@ -12,6 +12,7 @@ export const operatorFromKey: any = {
   '-': 'subtract',
   '*': 'multiply',
   '/': 'divide',
+  Enter: 'add',
 };
 
 export const total = (operations: Operation[]) => {
