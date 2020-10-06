@@ -16,7 +16,7 @@ export const operatorFromKey: any = {
 };
 
 export const total = (operations: Operation[]) => {
-  return operations.reduce((acc, operation) => {
+  let result = operations.reduce((acc, operation) => {
     let number = parseFloat(operation.value);
 
     if (operation.operator === 'add') {
@@ -33,4 +33,5 @@ export const total = (operations: Operation[]) => {
     }
     return acc;
   }, 0);
+  return new Intl.NumberFormat().format(result);
 };

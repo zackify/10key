@@ -29,6 +29,7 @@ export const Input = ({
         value={currentInput}
         onKeyPress={(e) => {
           let operator = operatorFromKey[e.key];
+
           if (currentInput && operator && parseFloat(currentInput))
             addRow(operator);
         }}
@@ -40,7 +41,7 @@ export const Input = ({
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
           style={styles.button}
-          onClick={() => {
+          onClick={async () => {
             let longestStart = operations.reduce(
               (acc, op) =>
                 new Intl.NumberFormat().format(parseFloat(op.value)).length >
@@ -49,35 +50,34 @@ export const Input = ({
                   : acc,
               0,
             );
+            let sum = total(operations);
             // this looks so messy but it works and i made it in 5 minutes lol
-            copy(
-              `${operations
-                .map((operation) => {
-                  let formattedValue = new Intl.NumberFormat().format(
-                    parseFloat(operation.value),
-                  );
-                  let isSubtract = operation.operator === 'subtract';
+            let text = `${operations
+              .map((operation) => {
+                let formattedValue = new Intl.NumberFormat().format(
+                  parseFloat(operation.value),
+                );
+                let isSubtract = operation.operator === 'subtract';
 
-                  return `${formattedValue} ${new Array(
-                    longestStart - formattedValue.length + 20,
-                  )
-                    .fill(0)
-                    .map((op) => ' ')
-                    .join('&nbsp;')} ${
-                    isSubtract ? '<span style="color:red;">' : ''
-                  }${operatorLookup[operation.operator]}${
-                    isSubtract ? '</span>' : ''
-                  }`;
-                })
-                .join('<br />')}<br />
-${total(operations)}
-            `,
-              { format: 'text/html' },
-            );
-            inputRef.current?.focus();
+                return `${
+                  isSubtract ? '<span style="color:red;">' : ''
+                }${formattedValue}${isSubtract ? '</span>' : ''} ${new Array(
+                  longestStart - formattedValue.length + 10,
+                )
+                  .fill(0)
+                  .map((op) => ' ')
+                  .join('&nbsp;')} ${operatorLookup[operation.operator]}`;
+              })
+              .join('<br />\n')}<br />\n
+${sum} ${new Array(longestStart - sum.length + 10)
+              .fill(0)
+              .map((op) => ' ')
+              .join('&nbsp;')} total`;
+
+            copy(text, { format: 'text/html' });
           }}
         >
-          <span>C</span>
+          <span>Copy</span>
         </div>
         <div
           style={styles.button}
@@ -87,7 +87,7 @@ ${total(operations)}
             inputRef.current?.focus();
           }}
         >
-          <span>R</span>
+          <span>Reset</span>
         </div>
       </div>
     </div>
@@ -97,11 +97,12 @@ ${total(operations)}
 const styles: { [key: string]: CSSProperties } = {
   button: {
     cursor: 'pointer',
-    backgroundColor: '#2C4251',
+    backgroundColor: '#D16666',
     marginLeft: 5,
-    width: 40,
+    paddingLeft: 5,
+    paddingRight: 5,
     height: 40,
-    color: '#D16666',
+    color: '#2C4251',
     fontSize: 30,
     textAlign: 'center',
     display: 'flex',

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useScrollToBottom } from 'useScrollToBottom';
 import { Operation, operatorLookup, total } from './operators';
 
 type Props = {
@@ -6,8 +7,24 @@ type Props = {
 };
 
 export const Output = ({ operations }: Props) => {
+  let container = useScrollToBottom(operations);
+  let longestStart = operations.reduce(
+    (acc, op) =>
+      new Intl.NumberFormat().format(parseFloat(op.value)).length > acc
+        ? op.value.length
+        : acc,
+    0,
+  );
   return (
-    <div style={{ height: 200, overflow: 'scroll', width: '100%' }}>
+    <div
+      style={{
+        height: 300,
+        overflow: 'scroll',
+        width: '70%',
+        marginBottom: 12,
+      }}
+      ref={(ref) => (container.current = ref)}
+    >
       {operations.map((operation, index) => {
         let isSubtract = operation.operator === 'subtract';
         return (
@@ -18,10 +35,10 @@ export const Output = ({ operations }: Props) => {
               justifyContent: 'space-between',
             }}
           >
-            <div>
+            <div style={{ color: isSubtract ? '#FF1B1C' : undefined }}>
               ${new Intl.NumberFormat().format(parseFloat(operation.value))}
             </div>
-            <div style={{ color: isSubtract ? 'red' : undefined }}>
+            <div style={{ marginRight: 10 }}>
               {operatorLookup[operation.operator]}
             </div>
           </div>
@@ -35,7 +52,7 @@ export const Output = ({ operations }: Props) => {
         }}
       >
         <div>${total(operations)}</div>
-        <div>total</div>
+        <div style={{ marginRight: 10 }}>total</div>
       </div>
     </div>
   );
