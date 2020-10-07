@@ -1,26 +1,22 @@
 import React from 'react';
 import { useScrollToBottom } from 'useScrollToBottom';
-import { Operation, operatorLookup, total } from './operators';
+import { Operation, operatorLookup, toMoney, total } from './operators';
 
 type Props = {
   operations: Operation[];
+  removeItem: (index: number) => any;
 };
 
-export const Output = ({ operations }: Props) => {
+export const Output = ({ operations, removeItem }: Props) => {
   let container = useScrollToBottom(operations);
-  let longestStart = operations.reduce(
-    (acc, op) =>
-      new Intl.NumberFormat().format(parseFloat(op.value)).length > acc
-        ? op.value.length
-        : acc,
-    0,
-  );
+
   return (
     <div
       style={{
+        marginTop: 20,
         height: 300,
         overflow: 'scroll',
-        width: '70%',
+        width: 350,
         marginBottom: 12,
       }}
       ref={(ref) => (container.current = ref)}
@@ -33,13 +29,28 @@ export const Output = ({ operations }: Props) => {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
+              borderBottom: '1px solid #FFFFFC',
+              paddingTop: 4,
+              paddingBottom: 4,
             }}
           >
             <div style={{ color: isSubtract ? '#FF1B1C' : undefined }}>
-              ${new Intl.NumberFormat().format(parseFloat(operation.value))}
+              ${toMoney(parseFloat(operation.value))}
             </div>
-            <div style={{ marginRight: 10 }}>
+            <div
+              style={{
+                marginRight: 10,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               {operatorLookup[operation.operator]}
+              <div
+                style={{ fontSize: 10, marginLeft: 12, cursor: 'pointer' }}
+                onClick={() => removeItem(index)}
+              >
+                Delete
+              </div>
             </div>
           </div>
         );
@@ -48,11 +59,13 @@ export const Output = ({ operations }: Props) => {
       <div
         style={{
           display: 'flex',
+          paddingTop: 4,
+          paddingBottom: 4,
           justifyContent: 'space-between',
         }}
       >
-        <div>${total(operations)}</div>
-        <div style={{ marginRight: 10 }}>total</div>
+        <div>${total(operations).formatted}</div>
+        <div style={{ marginRight: 10 }}>running total</div>
       </div>
     </div>
   );

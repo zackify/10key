@@ -5,6 +5,7 @@ export const operatorLookup: any = {
   multiply: '*',
   subtract: '-',
   divide: '/',
+  total: 'total',
 };
 
 export const operatorFromKey: any = {
@@ -12,7 +13,6 @@ export const operatorFromKey: any = {
   '-': 'subtract',
   '*': 'multiply',
   '/': 'divide',
-  Enter: 'add',
 };
 
 export const total = (operations: Operation[]) => {
@@ -33,5 +33,9 @@ export const total = (operations: Operation[]) => {
     }
     return acc;
   }, 0);
-  return new Intl.NumberFormat().format(result);
+  return { formatted: toMoney(result), raw: result };
+};
+
+export const toMoney = (number: number) => {
+  return new Intl.NumberFormat().format(number);
 };
