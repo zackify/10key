@@ -2,7 +2,7 @@
   "name": "10key",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://zackify.github.io/10key",
+  "homepage": "https://10key.app",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
