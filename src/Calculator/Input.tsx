@@ -1,7 +1,6 @@
 import React, { CSSProperties, useRef } from 'react';
-import copy from 'copy-to-clipboard';
-import { toMoney, total } from './operators';
-import { Operation, operatorFromKey, operatorLookup } from './operators';
+import {  total } from './operators';
+import { Operation, operatorFromKey } from './operators';
 
 type Props = {
   currentInput: string;
@@ -43,34 +42,12 @@ export const Input = ({
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
           style={styles.button}
-          onClick={async () => {
-            let longestStart = operations.reduce((acc, op) => {
-              let numlen = toMoney(parseFloat(op.value)).length;
-              return numlen > acc ? numlen : acc;
-            }, 0);
-            let sum = total(operations).formatted;
-            // this looks so messy but it works and i made it in 5 minutes lol
-            let text = `${operations
-              .map((operation) => {
-                let formattedValue = toMoney(parseFloat(operation.value));
-
-                return `${formattedValue} ${new Array(
-                  longestStart - formattedValue.length + 10,
-                )
-                  .fill(0)
-                  .map(() => '')
-                  .join(' ')} ${operatorLookup[operation.operator]}`;
-              })
-              .join('\n')}\n
-${sum} ${new Array(longestStart - sum.length + 10)
-              .fill(0)
-              .map((op) => '')
-              .join(' ')} total`;
-
-            copy(text, { format: 'text/plain' });
-          }}
+          onClick={() => {
+              onInputChange('');
+              inputRef.current?.focus();
+            }}
         >
-          <span>Copy</span>
+          <span>Clear</span>
         </div>
         <div
           style={styles.button}
