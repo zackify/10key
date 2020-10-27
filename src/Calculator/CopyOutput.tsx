@@ -1,6 +1,6 @@
 import React from 'react';
 import { useScrollToBottom } from 'useScrollToBottom';
-import { Operation, operatorLookup, toMoney, total } from './operators';
+import { Operation, operatorLookup, toMoney } from './operators';
 
 type Props = {
   operations: Operation[];
@@ -59,19 +59,6 @@ export const CopyOutput = ({ operations, removeItem }: Props) => {
           </div>
         );
       })}
-
-      {/* <div
-        style={{
-          display: 'flex',
-          paddingTop: 4,
-          paddingBottom: 4,
-          justifyContent: 'flex-end',
-          color: '#000',
-        }}
-      >
-        <div>{total(operations).formatted}</div>
-        <div style={{ marginRight: 10, marginLeft: 10 }}>running total</div>
-      </div> */}
     </div>
   );
 };
