@@ -50,6 +50,7 @@ export const CopyOutput = ({ operations, removeItem }: Props) => {
                 display: 'flex',
                 alignItems: 'center',
                 color: isSubtract ? '#FF1B1C' : '#000',
+                width: operatorLookup[operation.operator] === 'total' ? 0 : 10,
               }}
             >
               {operatorLookup[operation.operator] === 'total'
